@@ -31,6 +31,10 @@ class ViewController: UIViewController {
         
         emailTextFieldView.backgroundColor = UIColor.darkGray
         
+        // radius corners 
+        emailTextFieldView.layer.cornerRadius = 5;
+        emailTextFieldView.layer.masksToBounds = true;
+        
         // Controller 에서 가지고 있는 view, sub 에 만들어 놓는다. // 필수
         view.addSubview(emailTextFieldView)
         
@@ -62,6 +66,7 @@ class ViewController: UIViewController {
             equalToConstant: 40
         ).isActive = true
         
+
     }
 
 }
