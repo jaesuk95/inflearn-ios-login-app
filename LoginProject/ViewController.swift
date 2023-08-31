@@ -9,7 +9,24 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let emailTextFieldView = UIView()
+    
+    // 클로저 속성 실행문
+    // 속성 내부에서 setting 을 한다
+    // 장점 : 코드 정리
+    // emailTextFieldView 관련 연결 코드가 바로 밑에 view 에서 보인다
+    // UIViewController 인스턴스가 생성되면 메모리에 올라간다, 메모리에 올라가면 저장 속성도 생긴다, 저장 속성 생기는 동시에 클로저를 실행하게 된다. UIView 를 만들고 setting 을 해준다
+    // Springboot 로 예를 들자면, @Value ("${spring.rabbit.host}"), 이렇게 초기에 생성될 때 setting 을 해준다
+    let emailTextFieldView: UIView = {
+        let view = UIView()
+        
+        view.backgroundColor = UIColor.darkGray
+        
+        // radius corners
+        view.layer.cornerRadius = 5;
+        view.layer.masksToBounds = true;
+        
+        return view
+    }()
     
 
     override func viewDidLoad() {
@@ -27,13 +44,7 @@ class ViewController: UIViewController {
         // 1. 등록
         // 2. 자동 frame 설정
         // 3. layout 설정 (constraint)
-        // 3.
         
-        emailTextFieldView.backgroundColor = UIColor.darkGray
-        
-        // radius corners 
-        emailTextFieldView.layer.cornerRadius = 5;
-        emailTextFieldView.layer.masksToBounds = true;
         
         // Controller 에서 가지고 있는 view, sub 에 만들어 놓는다. // 필수
         view.addSubview(emailTextFieldView)
