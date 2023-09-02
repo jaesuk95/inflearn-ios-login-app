@@ -106,6 +106,7 @@ class ViewController: UIViewController {
         button.setTitle("표시", for: .normal)
         button.setTitleColor(#colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha:1), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        button.addTarget(self, action: #selector(passwordSecureModSetting), for: .touchUpInside)
         return button
     }()
     
@@ -142,7 +143,7 @@ class ViewController: UIViewController {
         button.backgroundColor = .clear
         button.setTitle("비밀번호 재설정", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-//        button.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -264,6 +265,32 @@ class ViewController: UIViewController {
 //        emailTextFieldView.trailingAnchor.constraint(equalTo: emailTextFieldView.trailingAnchor, constant: 8).isActive = true
 //        emailTextFieldView.topAnchor.constraint(equalTo: emailTextFieldView.topAnchor, constant: 15).isActive = true
 //        emailTextFieldView.bottomAnchor.constraint(equalTo: emailTextFieldView.bottomAnchor, constant: 2).isActive = true
+    }
+    
+    @objc func passwordSecureModSetting(){
+        print("표시 버튼이 눌렸습니다")
+        // toggle 한번 누르면 참, 두번째 누르면 불
+        passwordTextField.isSecureTextEntry.toggle()
+    }
+    
+    // selector 으로 만들었기 때문에 objc
+    @objc func resetButtonTapped() {
+        print("reset 버튼이 눌렸습니다")
+        let alertCount = UIAlertController(title: "비밀번호 바꾸기", message: "비밀번호를 바꾸시겠습니까?", preferredStyle: .alert)
+        
+        let success = UIAlertAction(title: "확인", style: .default) { action in
+            print("확인 버튼이 눌렸습니다")
+        }
+        
+        let cancel = UIAlertAction(title: "취소", style: .cancel) { cancel in
+            print("취소버튼이 눌렸습니다")
+        }
+        
+        alertCount.addAction(success)
+        alertCount.addAction(cancel)
+        
+        // 다음 화면으로 넘어가기
+        present(alertCount, animated: true, completion: nil)
     }
 
 }
