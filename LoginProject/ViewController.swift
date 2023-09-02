@@ -57,6 +57,8 @@ class ViewController: UIViewController {
         tf.autocorrectionType = .no
         tf.spellCheckingType = .no
         tf.keyboardType = .emailAddress
+        // 값이 변할 때 마다, #selector 를 통해서 변경될 수 있도록
+        tf.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         return tf
     }()
     
@@ -97,6 +99,7 @@ class ViewController: UIViewController {
         tf.spellCheckingType = .no
         tf.isSecureTextEntry = true     // 비밀번호 가리기
         tf.clearsOnBeginEditing = false
+        tf.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         return tf
     }()
     
@@ -106,7 +109,7 @@ class ViewController: UIViewController {
         button.setTitle("표시", for: .normal)
         button.setTitleColor(#colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha:1), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .light)
-        button.addTarget(ViewController.self, action: #selector(passwordSecureModSetting), for: .touchUpInside)
+        button.addTarget(self, action: #selector(passwordSecureModSetting), for: .touchUpInside)
         return button
     }()
     
@@ -143,7 +146,7 @@ class ViewController: UIViewController {
         button.backgroundColor = .clear
         button.setTitle("비밀번호 재설정", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        button.addTarget(ViewController.self, action: #selector(resetButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -284,6 +287,10 @@ class ViewController: UIViewController {
         passwordTextField.isSecureTextEntry.toggle()
     }
     
+    @objc func loginButtonTapped() {
+        print("로그인 버튼이 눌렸습니다")
+    }
+    
     // selector 으로 만들었기 때문에 objc
     @objc func resetButtonTapped() {
         print("reset 버튼이 눌렸습니다")
@@ -302,6 +309,10 @@ class ViewController: UIViewController {
         
         // 다음 화면으로 넘어가기
         present(alertCount, animated: true, completion: nil)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
 
 }
@@ -329,7 +340,7 @@ extension ViewController: UITextFieldDelegate {
         }
     }
     
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == emailTextField {
             emailTextFieldView.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
@@ -352,4 +363,28 @@ extension ViewController: UITextFieldDelegate {
             self.stackView.layoutIfNeeded()
         }
     }
+    
+    // textFieldEditingChangedWithTextField
+    @objc func textFieldEditingChanged(textField: UITextField) {
+        if textField.text?.count == 1 {     // 글자가 한 개만 있으면
+            if textField.text?.first == " " {   // 첫 번째 글자가 " " 이라면
+                textField.text = ""
+                return      // 벗어나라
+            }
+        }
+        guard
+            let email = emailTextField.text, !email.isEmpty,    // email 에 담겨둬라
+            let password = passwordTextField.text, !password.isEmpty
+        else {
+            loginButton.backgroundColor = .clear
+            loginButton.isEnabled = false
+            return
+        }
+
+
+        
+        loginButton.backgroundColor = .red
+        loginButton.isEnabled = true
+    }
+    
 }
