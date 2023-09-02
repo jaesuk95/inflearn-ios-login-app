@@ -7,7 +7,8 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+// final 속성을 못 바꾸고, direct dispatcher 로 변한다
+final class ViewController: UIViewController {
     
     
     // 클로저 속성 실행문
@@ -29,6 +30,7 @@ class ViewController: UIViewController {
 //    }()
     
     // email
+    // if you want to add 'addSubView' make sure you add 'lazy var'
     private lazy var emailTextFieldView: UIView = {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
@@ -166,6 +168,7 @@ class ViewController: UIViewController {
         
 
         // 이것을 설정해야만 delegate 대리자 역할을 수행한다.
+        // 여기서 self 는 ViewController 를 의미한다, 그래서 viewController 의 대리자 가 된다.
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
